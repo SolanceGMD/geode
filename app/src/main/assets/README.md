@@ -1,0 +1,1 @@
+Place your image file in this folder and name it exactly `Backround.png` (matching the spelling requested). The final path must be `app/src/main/assets/Backround.png`. This README is only a placeholder; the app loads the PNG from the assets folder at runtime.
