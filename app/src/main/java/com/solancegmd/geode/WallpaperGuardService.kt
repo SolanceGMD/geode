@@ -79,7 +79,7 @@ class WallpaperGuardService : Service() {
             getSharedPreferences(PREFS, MODE_PRIVATE).edit().putInt(KEY_WALLPAPER_ID, id).apply()
         } catch (e: Exception) {
             Log.e(TAG, "Could not apply app/src/main/assets/Backround.png", e)
-            stopForeground(STOP_FOREGROUND_REMOVE)
+            stopForeground(true)
             stopSelf()
         } finally {
             applyingWallpaper = false
