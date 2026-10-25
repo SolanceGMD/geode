@@ -1,8 +1,6 @@
 package com.solancegmd.geode
 
 import android.app.Activity
-import android.app.WallpaperManager
-import android.content.ComponentName
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
@@ -21,31 +19,39 @@ class MainActivity : Activity() {
             setBackgroundColor(Color.rgb(20, 24, 34))
         }
         val title = TextView(this).apply {
-            text = "Geode Wallpaper"
+            text = "Geode Wallpaper Guard"
             textSize = 26f
             setTextColor(Color.WHITE)
             gravity = Gravity.CENTER
         }
         val info = TextView(this).apply {
-            text = "Choose the live wallpaper to use Backround.png. Swipe between home-screen pages to pan the image."
+            text = "Keep Backround.png as your home-screen wallpaper. When Android reports that another wallpaper was set, this app will restore your image. A persistent notification is required while protection is active."
             textSize = 16f
             setTextColor(Color.LTGRAY)
             gravity = Gravity.CENTER
             setPadding(0, 20, 0, 24)
         }
-        val button = Button(this).apply {
-            text = "Set live wallpaper"
+        val enable = Button(this).apply {
+            text = "Enable wallpaper protection"
             setOnClickListener {
-                val intent = Intent(WallpaperManager.ACTION_CHANGE_LIVE_WALLPAPER).apply {
-                    putExtra(WallpaperManager.EXTRA_LIVE_WALLPAPER_COMPONENT,
-                        ComponentName(this@MainActivity, GeodeWallpaperService::class.java))
-                }
-                startActivity(intent)
+                getSharedPreferences(WallpaperGuardService.PREFS, MODE_PRIVATE)
+                    .edit().putBoolean(WallpaperGuardService.KEY_ENABLED, true).apply()
+                val intent = Intent(this@MainActivity, WallpaperGuardService::class.java)
+                startForegroundService(intent)
+            }
+        }
+        val disable = Button(this).apply {
+            text = "Disable protection"
+            setOnClickListener {
+                getSharedPreferences(WallpaperGuardService.PREFS, MODE_PRIVATE)
+                    .edit().putBoolean(WallpaperGuardService.KEY_ENABLED, false).apply()
+                stopService(Intent(this@MainActivity, WallpaperGuardService::class.java))
             }
         }
         layout.addView(title)
         layout.addView(info)
-        layout.addView(button)
+        layout.addView(enable)
+        layout.addView(disable)
         setContentView(layout)
     }
 }
