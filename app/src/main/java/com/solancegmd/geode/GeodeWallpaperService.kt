@@ -10,7 +10,6 @@ import android.graphics.Rect
 import android.graphics.Color
 import android.os.Handler
 import android.os.Looper
-import android.service.wallpaper.WallpaperManager
 import kotlin.math.max
 
 class GeodeWallpaperService : WallpaperService() {
